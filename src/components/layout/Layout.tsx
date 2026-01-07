@@ -3,7 +3,6 @@ import { memo, type ReactNode, Suspense } from "react";
 import { Outlet } from "react-router";
 import LeftSide from "./components/LeftSide";
 import Header from "./components/Header";
-import RightSide from "./components/RightSide";
 import { useThemeMediaQuery } from "@/@core/hooks";
 
 type LayoutProps = {
@@ -16,8 +15,6 @@ type LayoutProps = {
 function Layout(props: LayoutProps) {
     const { children } = props;
     const isMobile = useThemeMediaQuery((t) => t.breakpoints.down("lg"));
-
-    const isDesktop = useThemeMediaQuery((t) => t.breakpoints.up("xl"));
 
     return (
         <div className='flex w-full flex-auto'>
@@ -37,8 +34,6 @@ function Layout(props: LayoutProps) {
                     </div>
                 </main>
             </div>
-
-            {isDesktop && <RightSide />}
         </div>
     );
 }

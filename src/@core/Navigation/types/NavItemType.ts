@@ -1,4 +1,3 @@
-import type { NavBadgeType } from "./NavBadgeType";
 
 /**
  * NavItemType
@@ -18,9 +17,9 @@ export type NavItemType = {
     active?: boolean;
     exact?: boolean;
     end?: boolean;
-    badge?: NavBadgeType;
     children?: NavItemType[];
     hasPermission?: boolean;
+    component?: React.ReactNode;
 };
 
 export type FlatNavItemType = Omit<NavItemType, "children" | "sx"> & {
