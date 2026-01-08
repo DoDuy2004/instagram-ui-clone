@@ -1,4 +1,3 @@
-
 /**
  * NavItemType
  * A type for  navigation item and its properties.
@@ -19,7 +18,7 @@ export type NavItemType = {
     end?: boolean;
     children?: NavItemType[];
     hasPermission?: boolean;
-    component?: React.ReactNode;
+    componentId?: string;
 };
 
 export type FlatNavItemType = Omit<NavItemType, "children" | "sx"> & {

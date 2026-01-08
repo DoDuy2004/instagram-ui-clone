@@ -15,6 +15,7 @@ const navigationConfig: NavItemType[] = [
         title: "Search",
         type: "panel",
         icon: "lucide:search",
+        componentId: "search",
     },
     {
         id: "explore",
@@ -39,6 +40,7 @@ const navigationConfig: NavItemType[] = [
         title: "Notifications",
         type: "panel",
         icon: "lucide:heart",
+        componentId: "notifications",
     },
     {
         id: "create",

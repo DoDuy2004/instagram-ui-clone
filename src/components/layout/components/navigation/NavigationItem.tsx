@@ -8,22 +8,53 @@ import {
 } from "@/components/ui/dropdown-menu";
 import type { NavItemType } from "@/@core/Navigation/types/NavItemType";
 import AppSvgIcon from "@/@core/SvgIcon";
-import { useState } from "react";
-import { SidePanel } from "./SidePanel";
+import { useNavigationContext } from "./contexts/useNavigationContext";
 
-const NavigationItem = ({ item }: { item: NavItemType }) => {
-    const [activePanelId, setActivePanelId] = useState<string | null>(null);
+type NavigationItemProps = {
+    item: NavItemType;
+    isActiveId: string | null;
+    setIsActiveId: (itemId: string) => void;
+};
+
+const NavigationItem = ({
+    item,
+    isActiveId,
+    setIsActiveId,
+}: NavigationItemProps) => {
+    const {
+        openPanel,
+        isCollapsed,
+        closePanel,
+        activePanel,
+        collapseSidebar,
+        navigationUI,
+        expandSidebar,
+    } = useNavigationContext();
+    const showLabel = !isCollapsed;
+
+    const buttonClass = `py-6 px-3 gap-3 focus:outline-none cursor-pointer ${
+        isActiveId === item.id ? "font-bold" : "font-normal"
+    }`;
 
     if (item.type === "item") {
         return (
             <SidebarMenuItem>
                 <SidebarMenuButton
+                    onClick={() => {
+                        setIsActiveId(item?.id);
+                        expandSidebar();
+                        closePanel();
+                    }}
                     asChild
                     tooltip={item.title}
-                    className='py-6 px-3'>
+                    className={buttonClass}>
                     <Link to={item.url || "#"}>
-                        <AppSvgIcon>{item?.icon}</AppSvgIcon>
-                        <span className='text-base'>{item.title}</span>
+                        <AppSvgIcon
+                            strokeWidth={isActiveId === item.id ? 3 : 2}
+                            size={24}>
+                            {item?.icon}
+                        </AppSvgIcon>
+                        {showLabel && <span>{item.title}</span>}
                     </Link>
                 </SidebarMenuButton>
             </SidebarMenuItem>
@@ -33,13 +64,20 @@ const NavigationItem = ({ item }: { item: NavItemType }) => {
     if (item.type === "menu") {
         return (
             <SidebarMenuItem>
-                <DropdownMenu>
+                <DropdownMenu
+                    onOpenChange={(open) => {
+                        if (open) setIsActiveId(item.id);
+                    }}>
                     <DropdownMenuTrigger asChild>
                         <SidebarMenuButton
                             tooltip={item.title}
-                            className='py-6 px-3'>
-                            <AppSvgIcon>{item?.icon}</AppSvgIcon>
-                            <span className='text-base'>{item.title}</span>
+                            className={buttonClass}>
+                            <AppSvgIcon
+                                strokeWidth={isActiveId === item.id ? 3 : 2}
+                                size={24}>
+                                {item?.icon}
+                            </AppSvgIcon>
+                            {showLabel && <span>{item.title}</span>}
                         </SidebarMenuButton>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align='start' className='min-w-full'>
@@ -55,18 +93,36 @@ const NavigationItem = ({ item }: { item: NavItemType }) => {
     }
 
     if (item.type === "panel") {
-        const isOpen = activePanelId === item.id;
-
         return (
             <SidebarMenuItem>
                 <SidebarMenuButton
-                    onClick={() => setActivePanelId(isOpen ? null : item.id)}
-                    className='py-6 px-3 focus:outline-none'>
-                    <AppSvgIcon>{item?.icon}</AppSvgIcon>
-                    <span className='text-base'>{item.title}</span>
-                </SidebarMenuButton>
+                    onClick={() => {
+                        setIsActiveId(item?.id);
+                        if (activePanel?.id === item.id) {
+                            closePanel();
+                            expandSidebar();
+                        } else {
+                            if (navigationUI.mode === "panel-open") {
+                                closePanel();
 
-                <SidePanel isOpen={isOpen}>{item.component}</SidePanel>
+                                setTimeout(() => {
+                                    openPanel(item);
+                                    collapseSidebar();
+                                }, 150);
+                            } else {
+                                openPanel(item);
+                                collapseSidebar();
+                            }
+                        }
+                    }}
+                    className={buttonClass}>
+                    <AppSvgIcon
+                        strokeWidth={isActiveId === item.id ? 3 : 2}
+                        size={24}>
+                        {item?.icon}
+                    </AppSvgIcon>
+                    {showLabel && <span>{item.title}</span>}
+                </SidebarMenuButton>
             </SidebarMenuItem>
         );
     }
