@@ -74,7 +74,7 @@ const AppSvgIcon = forwardRef<SVGSVGElement, AppSvgIconProps>((props, ref) => {
             }}
             {...(isLucideIcon && {
                 stroke: "currentColor",
-                strokeWidth: 2,
+                strokeWidth: props?.strokeWidth,
                 strokeLinecap: "round",
                 strokeLinejoin: "round",
             })}>

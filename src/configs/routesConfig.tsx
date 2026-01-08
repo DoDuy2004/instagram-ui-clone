@@ -2,7 +2,7 @@
 import { Navigate, type RouteObject } from "react-router";
 import App from "@/app/App";
 import settingsConfig from "./settingsConfig";
-import ErrorBoundary from "@/utils/ErrorBoundary";
+import ErrorBoundary from "@/@core/utils/ErrorBoundary";
 
 /**
  * The FuseRouteItemType type

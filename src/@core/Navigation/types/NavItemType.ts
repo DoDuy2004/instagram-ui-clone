@@ -1,5 +1,3 @@
-import type { NavBadgeType } from "./NavBadgeType";
-
 /**
  * NavItemType
  * A type for  navigation item and its properties.
@@ -18,9 +16,9 @@ export type NavItemType = {
     active?: boolean;
     exact?: boolean;
     end?: boolean;
-    badge?: NavBadgeType;
     children?: NavItemType[];
     hasPermission?: boolean;
+    componentId?: string;
 };
 
 export type FlatNavItemType = Omit<NavItemType, "children" | "sx"> & {

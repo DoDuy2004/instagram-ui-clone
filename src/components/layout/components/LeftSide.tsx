@@ -1,9 +1,7 @@
-import React from 'react'
+import Navigation from "./navigation/Navigation";
 
 const LeftSide = () => {
-  return (
-    <div>LeftSide</div>
-  )
-}
+    return <Navigation />;
+};
 
-export default LeftSide
+export default LeftSide;
